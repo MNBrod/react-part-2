@@ -44,7 +44,7 @@ export default class SingleArtist extends Component {
         <h3>
           {artist.name}
         </h3>
-        <AllAlbums Albums={this.state.albums} />
+        <AllAlbums albums={this.state.albums} />
         <Songs songs={this.state.songs} />
       </div>
     );

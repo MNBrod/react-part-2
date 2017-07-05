@@ -27,7 +27,7 @@ export default class AllArtists extends Component {
             return (
               <div className="list-group-item" key={artist.id}>
                 {/* determine where to actually Link to later! */}
-                <Link to= {`/artists/${artist.id}`}>
+                <Link to={`/artists/${artist.id}`}>
                   {artist.name}
                 </Link>
               </div>
