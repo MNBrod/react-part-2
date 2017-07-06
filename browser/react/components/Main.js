@@ -16,7 +16,6 @@ export default class Main extends Component {
   }
 
   render() {
-    console.log('jonnyboy', this.props);
     return (
       <div id="main" className="container-fluid">
         <HashRouter>
@@ -27,13 +26,13 @@ export default class Main extends Component {
             <div className="col-xs-10">
               <Route exact path="/" component={StatefulAlbums} />
               <Route exact path="/albums" component={StatefulAlbums} />
-              <Route path="/albums/:albumId" component={SingleAlbum} />
+              <Route path="/albums/:albumId" render={(routeProps) => <SingleAlbum audio={this.props} match={routeProps.match} /> } />
               <Route exact path="/artists" component={AllArtists} />
-              <Route path="/artists/:artistId" component={SingleArtists} />
+              <Route path="/artists/:artistId" render={(routeProps) => <SingleArtists audio={this.props} match={routeProps.match} /> } />
             </div>
           </div>
         </HashRouter>
-        <Player />
+        <Player audio={this.props} />
       </div>
     );
   }

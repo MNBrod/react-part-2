@@ -3,7 +3,6 @@ import React from 'react';
 const Songs = (props) => {
 
   const songs = props.songs;
-
   return (
     <table className="table">
       <thead>
@@ -20,7 +19,7 @@ const Songs = (props) => {
             <tr key={song.id}>
               <td>
                 <button className="btn btn-default btn-xs">
-                  <span className="glyphicon glyphicon-play" />
+                  <span className="glyphicon glyphicon-play" onClick={() => props.audio.toggleOne(song, songs)} />
                 </button>
               </td>
               <td>{ song.name }</td>

@@ -69,7 +69,7 @@ export default class SingleArtist extends Component {
         </ul>
         <HashRouter>
         <div>
-        <Route path="/artists/:id/songs" render={() => <Songs songs={this.state.songs} />} />
+        <Route path="/artists/:id/songs" render={() => <Songs audio={this.props.audio} songs={this.state.songs} />} />
         <Route path="/artists/:id/albums" render={() => <AllAlbums albums={this.state.albums} />} />
         </div>
         </HashRouter>
