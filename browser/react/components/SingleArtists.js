@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, HashRouter, Route } from "react-router-dom";
 import AllAlbums from "./AllAlbums";
 import Songs from "../components/Songs";
 import SingleAlbum from "./SingleAlbum";
@@ -8,27 +8,29 @@ import SingleAlbum from "./SingleAlbum";
 export default class SingleArtist extends Component {
   constructor() {
     super();
+    //this.id;
     this.state = {
       artist: {},
       albums: [],
-      songs: []
+      songs: [],
+      id: 0
     };
   }
 
   componentDidMount() {
-    const id = this.props.match.params.artistId;
-    axios.get(`/api/artists/${id}`).then(res => res.data).then(artist => {
-      this.setState({ artist });
-    });
+    //this.setStatethis.props.match.params.artistId;
+    // axios.get(`/api/artists/${id}`).then(res => res.data).then(artist => {
+    //   this.setState({ artist });
+    // });
 
     let proms = [];
-    proms.push(axios.get(`/api/artists/${id}`));
-    proms.push(axios.get(`/api/artists/${id}/albums`));
-    proms.push(axios.get(`/api/artists/${id}/songs`));
+    proms.push(axios.get(`/api/artists/${this.props.match.params.artistId}`));
+    proms.push(axios.get(`/api/artists/${this.props.match.params.artistId}/albums`));
+    proms.push(axios.get(`/api/artists/${this.props.match.params.artistId}/songs`));
 
     Promise.all(proms).then(results => {
-      console.log("result 2", results[2].data);
       this.setState({
+        id :   this.props.match.params.artistId,
         artist: results[0].data,
         albums: results[1].data,
         songs: results[2].data
@@ -39,13 +41,37 @@ export default class SingleArtist extends Component {
   render() {
     const artist = this.state.artist;
 
+    // return (
+    //   <div>
+    //     <h3>
+    //       {artist.name}
+    //     </h3>
+    //     <AllAlbums albums={this.state.albums} />
+    //     <Songs songs={this.state.songs} />
+    //   </div>
+    //     <Route exact path="/songs" component={StatefulAlbums} />
+    // <Route exact path="/albums" component={StatefulAlbums} />
+    // );
+
     return (
-      <div>
+            <div>
         <h3>
           {artist.name}
         </h3>
-        <AllAlbums albums={this.state.albums} />
-        <Songs songs={this.state.songs} />
+        <ul className="nav nav-tabs">
+          <li>
+            <Link to={`/artists/${this.state.id}/albums`}>ALBUMS</Link>
+          </li>
+          <li>
+            <Link to={`/artists/${this.state.id}/songs`}>SONGS</Link>
+          </li>
+        </ul>
+        <HashRouter>
+        <div>
+        <Route path="/artists/:id/songs" render={() => <Songs songs={this.state.songs} />} />
+        <Route path="/artists/:id/albums" render={() => <AllAlbums albums={this.state.albums} />} />
+        </div>
+        </HashRouter>
       </div>
     );
   }

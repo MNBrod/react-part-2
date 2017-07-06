@@ -25,8 +25,6 @@ export default class StatefulAlbums extends Component {
   render() {
     const albums = this.state.albums;
 
-    console.log("albumdsfsdfdss ", albums);
-
     return ( <AllAlbums albums={albums} />);
   }
 }

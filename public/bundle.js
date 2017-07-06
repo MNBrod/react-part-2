@@ -13273,7 +13273,7 @@ var AllArtists = function (_Component) {
               { className: "list-group-item", key: artist.id },
               _react2.default.createElement(
                 _reactRouterDom.Link,
-                { to: "/artists/" + artist.id },
+                { to: "/artists/" + artist.id + "/albums" },
                 artist.name
               )
             );
@@ -13453,12 +13453,14 @@ var SingleArtist = function (_Component) {
   function SingleArtist() {
     _classCallCheck(this, SingleArtist);
 
+    //this.id;
     var _this = _possibleConstructorReturn(this, (SingleArtist.__proto__ || Object.getPrototypeOf(SingleArtist)).call(this));
 
     _this.state = {
       artist: {},
       albums: [],
-      songs: []
+      songs: [],
+      id: 0
     };
     return _this;
   }
@@ -13468,21 +13470,19 @@ var SingleArtist = function (_Component) {
     value: function componentDidMount() {
       var _this2 = this;
 
-      var id = this.props.match.params.artistId;
-      _axios2.default.get("/api/artists/" + id).then(function (res) {
-        return res.data;
-      }).then(function (artist) {
-        _this2.setState({ artist: artist });
-      });
+      //this.setStatethis.props.match.params.artistId;
+      // axios.get(`/api/artists/${id}`).then(res => res.data).then(artist => {
+      //   this.setState({ artist });
+      // });
 
       var proms = [];
-      proms.push(_axios2.default.get("/api/artists/" + id));
-      proms.push(_axios2.default.get("/api/artists/" + id + "/albums"));
-      proms.push(_axios2.default.get("/api/artists/" + id + "/songs"));
+      proms.push(_axios2.default.get("/api/artists/" + this.props.match.params.artistId));
+      proms.push(_axios2.default.get("/api/artists/" + this.props.match.params.artistId + "/albums"));
+      proms.push(_axios2.default.get("/api/artists/" + this.props.match.params.artistId + "/songs"));
 
       Promise.all(proms).then(function (results) {
-        console.log("result 2", results[2].data);
         _this2.setState({
+          id: _this2.props.match.params.artistId,
           artist: results[0].data,
           albums: results[1].data,
           songs: results[2].data
@@ -13492,7 +13492,21 @@ var SingleArtist = function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       var artist = this.state.artist;
+
+      // return (
+      //   <div>
+      //     <h3>
+      //       {artist.name}
+      //     </h3>
+      //     <AllAlbums albums={this.state.albums} />
+      //     <Songs songs={this.state.songs} />
+      //   </div>
+      //     <Route exact path="/songs" component={StatefulAlbums} />
+      // <Route exact path="/albums" component={StatefulAlbums} />
+      // );
 
       return _react2.default.createElement(
         "div",
@@ -13502,8 +13516,42 @@ var SingleArtist = function (_Component) {
           null,
           artist.name
         ),
-        _react2.default.createElement(_AllAlbums2.default, { albums: this.state.albums }),
-        _react2.default.createElement(_Songs2.default, { songs: this.state.songs })
+        _react2.default.createElement(
+          "ul",
+          { className: "nav nav-tabs" },
+          _react2.default.createElement(
+            "li",
+            null,
+            _react2.default.createElement(
+              _reactRouterDom.Link,
+              { to: "/artists/" + this.state.id + "/albums" },
+              "ALBUMS"
+            )
+          ),
+          _react2.default.createElement(
+            "li",
+            null,
+            _react2.default.createElement(
+              _reactRouterDom.Link,
+              { to: "/artists/" + this.state.id + "/songs" },
+              "SONGS"
+            )
+          )
+        ),
+        _react2.default.createElement(
+          _reactRouterDom.HashRouter,
+          null,
+          _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(_reactRouterDom.Route, { path: "/artists/:id/songs", render: function render() {
+                return _react2.default.createElement(_Songs2.default, { songs: _this3.state.songs });
+              } }),
+            _react2.default.createElement(_reactRouterDom.Route, { path: "/artists/:id/albums", render: function render() {
+                return _react2.default.createElement(_AllAlbums2.default, { albums: _this3.state.albums });
+              } })
+          )
+        )
       );
     }
   }]);
@@ -13581,8 +13629,6 @@ var StatefulAlbums = function (_Component) {
     key: "render",
     value: function render() {
       var albums = this.state.albums;
-
-      console.log("albumdsfsdfdss ", albums);
 
       return _react2.default.createElement(_AllAlbums2.default, { albums: albums });
     }
