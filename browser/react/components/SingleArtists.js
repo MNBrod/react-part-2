@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import axios from "axios";
-import { Link, HashRouter, Route } from "react-router-dom";
-import AllAlbums from "./AllAlbums";
-import Songs from "../components/Songs";
-import SingleAlbum from "./SingleAlbum";
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Link, HashRouter, Route } from 'react-router-dom';
+import AllAlbums from './AllAlbums';
+import Songs from '../components/Songs';
+import SingleAlbum from './SingleAlbum';
 
 export default class SingleArtist extends Component {
   constructor() {
@@ -30,7 +30,7 @@ export default class SingleArtist extends Component {
 
     Promise.all(proms).then(results => {
       this.setState({
-        id :   this.props.match.params.artistId,
+        id:   this.props.match.params.artistId,
         artist: results[0].data,
         albums: results[1].data,
         songs: results[2].data
@@ -39,6 +39,7 @@ export default class SingleArtist extends Component {
   }
 
   render() {
+    console.log('props', this.props);
     const artist = this.state.artist;
 
     // return (
